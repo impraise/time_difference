@@ -48,10 +48,21 @@ describe TimeDifference do
   describe "#humanize" do
     with_each_class do |clazz|
       it "returns a string representing the time difference from in_general" do
-        start_time = clazz.new(2009, 11)
+        start_time = clazz.new(2009, 11, 5)
         end_time = clazz.new(2011, 1)
 
-        expect(TimeDifference.between(start_time, end_time).humanize).to eql("1 Year, 2 Months and 18 Hours")
+        expect(TimeDifference.between(start_time, end_time).humanize).to eql("1 Year, 1 Month, 3 Weeks, 5 Days and 18 Hours")
+      end
+    end
+
+    context "informing what parts I want" do
+      with_each_class do |clazz|
+        it "returns a string representing the time difference containing only the desired keys" do
+          start_time = clazz.new(2009, 11, 5)
+          end_time = clazz.new(2011, 1)
+
+          expect(TimeDifference.between(start_time, end_time).humanize([:years, :months])).to eql("1 Year and 1 Month")
+        end
       end
     end
   end
