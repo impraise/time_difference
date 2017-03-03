@@ -56,9 +56,11 @@ class TimeDifference
     end]
   end
 
-  def humanize
+  def humanize(only_parts = TIME_COMPONENTS)
     diff_parts = []
-    in_general.each do |part,quantity|
+    whitelisted_general = in_general.select { |part, _| only_parts.include?(part) }
+
+    whitelisted_general.each do |part, quantity|
       next if quantity <= 0
       part = part.to_s.humanize
 
@@ -78,7 +80,7 @@ class TimeDifference
   end
 
   private
-  
+
   def initialize(start_time, end_time)
     start_time = time_in_seconds(start_time)
     end_time = time_in_seconds(end_time)
